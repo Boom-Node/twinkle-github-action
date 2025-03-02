@@ -1,7 +1,7 @@
 name: Twinkle Token Automation
 
 on:
-  workflow_dispatch: # Manually trigger the action
+  workflow_dispatch:
 
 jobs:
   execute-transaction:
@@ -18,9 +18,23 @@ jobs:
       - name: Install dependencies
         run: npm install ethers dotenv
 
-      - name: Run transaction script
+      - name: Run airdrop script
         env:
           PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
           RPC_URL: ${{ secrets.RPC_URL }}
-          RECIPIENT: ${{ secrets.RECIPIENT }}
-        run: node scripts/transaction.js
+          RECIPIENTS: ${{ secrets.RECIPIENTS }}
+        run: node scripts/airdrop.js
+
+      - name: Run liquidity script
+        env:
+          PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
+          RPC_URL: ${{ secrets.RPC_URL }}
+        run: node scripts/liquidity.js
+
+      - name: Run batch transfer script
+        env:
+          PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
+          RPC_URL: ${{ secrets.RPC_URL }}
+          RECIPIENTS: ${{ secrets.RECIPIENTS }}
+          AMOUNTS: ${{ secrets.AMOUNTS }}
+        run: node scripts/batchTransfer.js
