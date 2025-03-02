@@ -1,0 +1,32 @@
+name: Twinkle Token Automation
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:  # Allows manual trigger
+  schedule:
+    - cron: "0 0 * * *"  # Runs daily at midnight UTC
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run Twinkle transaction script
+        env:
+          PRIVATE_KEY: ${{ secrets.WALLET_PRIVATE_KEY }}
+          INFURA_API: ${{ secrets.INFURA_API_URL }}
+        run: node scripts/transaction.js
