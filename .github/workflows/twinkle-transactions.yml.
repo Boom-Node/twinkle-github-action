@@ -1,0 +1,26 @@
+name: Twinkle Token Automation
+
+on:
+  workflow_dispatch: # Manually trigger the action
+
+jobs:
+  execute-transaction:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: npm install ethers dotenv
+
+      - name: Run transaction script
+        env:
+          PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
+          RPC_URL: ${{ secrets.RPC_URL }}
+          RECIPIENT: ${{ secrets.RECIPIENT }}
+        run: node scripts/transaction.js
